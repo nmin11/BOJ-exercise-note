@@ -1,0 +1,1 @@
+BOJ 문제 풀이에 기본적으로 사용할 template 은<br>src > main > java > boj > boj_exercise_note > Main.java 에 넣어두었습니다.

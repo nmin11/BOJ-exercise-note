@@ -1,51 +1,52 @@
-package boj.boj_exercise_note.rhs_lecture;
+package boj.boj_exercise_note.rhs_lecture.sort_application;
 
 import java.io.*;
 import java.util.*;
 
-public class BOJ_1015 {
-    static FastReader scan = new FastReader();
+public class BOJ_11652 {
+    static FastReader fr = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
-    static class Element implements Comparable<Element> {
-
-        public int num, idx;
-
-        @Override
-        public int compareTo(Element other) {
-            return num - other.num;
-        }
-    }
-
     static int N;
-    static int[] P;
-    static Element[] B;
+    static long[] el;
 
     static void input() {
-        N = scan.nextInt();
-        B = new Element[N];
-        P = new int[N];
-        for (int i = 0; i < N; i++) {
-            B[i] = new Element();
-            B[i].num = scan.nextInt();
-            B[i].idx = i;
+        N = fr.nextInt();
+        el = new long[N + 1];
+        for (int i = 1; i <= N; i++) {
+            el[i] = fr.nextLong();
         }
     }
 
-    static void solve() {
-        Arrays.sort(B);
-        for (int i = 0; i < N; i++) {
-            P[B[i].idx] = i;
+    static void sort() {
+        // Sort 정렬하기
+        Arrays.sort(el, 1, N + 1);
+        // mode: 최빈값, modeCnt: 최빈값의 등장 횟수, curCnt: 현재 값(a[1])의 등장 횟수
+        long mode = el[1];
+        int modeCnt = 1, curCnt = 1;
+
+        // 2번 원소부터 차례대로 보면서, 같은 숫자가 이어서 나오고 있는지, 새로운 숫자가 나왔는지를 판단하여
+        // curCnt 를 갱신해주고, 최빈값을 갱신하는 작업.
+        for (int i = 2; i <= N; i++) {
+            if (el[i] == el[i - 1]) {
+                curCnt++;
+            } else {
+                curCnt = 1;
+            }
+
+            if (curCnt > modeCnt) {
+                modeCnt = curCnt;
+                mode = el[i];
+            }
         }
-        for (int i = 0; i < N; i++) {
-            sb.append(P[i]).append(' ');
-        }
-        System.out.println(sb.toString());
+
+        // 정답 출력하기
+        System.out.println(mode);
     }
 
     public static void main(String[] args) {
         input();
-        solve();
+        sort();
     }
 
 

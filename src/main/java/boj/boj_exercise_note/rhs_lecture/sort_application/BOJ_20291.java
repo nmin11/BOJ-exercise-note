@@ -1,60 +1,47 @@
-package boj.boj_exercise_note.rhs_lecture;
+package boj.boj_exercise_note.rhs_lecture.sort_application;
 
 import java.io.*;
 import java.util.*;
 
-public class BOJ_15970 {
-    static FastReader scan = new FastReader();
+public class BOJ_20291 {
+    static FastReader fr = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
     static int N;
-    static ArrayList<Integer>[] el;
+    static String[] el;
 
     static void input() {
-        N = scan.nextInt();
-        el = new ArrayList[N + 1];
-        for (int color = 1; color <= N; color++) {
-            el[color] = new ArrayList<>();
-        }
+        N = fr.nextInt();
+        el = new String[N+1];
         for (int i = 1; i <= N; i++) {
-            int coordinate, color;
-            coordinate = scan.nextInt();
-            color = scan.nextInt();
-            el[color].add(coordinate);
+            // 입력된 파일 이름을 . 을 기준으로 나눠서 확장자를 가져오기
+            el[i] = fr.next().split("\\.")[1];
         }
-    }
-
-    static int toLeft(int color, int idx) {
-        if (idx == 0)  // 왼쪽에 더 이상 점이 없는 상태
-            return Integer.MAX_VALUE;
-        return el[color].get(idx) - el[color].get(idx - 1);
-    }
-
-    static int toRight(int color, int idx) {
-        if (idx + 1 == el[color].size())  // 오른쪽에 더 이상 점이 없는 상태
-            return Integer.MAX_VALUE;
-        return el[color].get(idx + 1) - el[color].get(idx);
     }
 
     static void solve() {
-        for (int color = 1; color <= N; color++)
-            Collections.sort(el[color]);
-
-        int ans = 0;
-        for (int color = 1; color <= N; color++) {
-            for (int i = 0; i < el[color].size(); i++) {
-                int left_distance = toLeft(color, i);
-                int right_distance = toRight(color, i);
-                ans += Math.min(left_distance, right_distance);
+        Arrays.sort(el, 1, N + 1);
+        int cnt = 1;
+        String curExtension = el[1];
+        for (int i = 2; i <= N; i++) {
+            if (el[i].equals(curExtension)) {
+                cnt++;
+            } else {
+                sb.append(curExtension).append(' ').append(cnt).append('\n');
+                curExtension = el[i];
+                cnt = 1;
             }
         }
-        System.out.println(ans);
+        sb.append(curExtension).append(' ').append(cnt).append('\n');
+
+        System.out.println(sb);
     }
 
     public static void main(String[] args) {
         input();
         solve();
     }
+
 
     static class FastReader {
         BufferedReader br;

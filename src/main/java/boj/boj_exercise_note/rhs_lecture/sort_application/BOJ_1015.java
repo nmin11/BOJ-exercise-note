@@ -1,40 +1,46 @@
-package boj.boj_exercise_note.rhs_lecture;
+package boj.boj_exercise_note.rhs_lecture.sort_application;
 
 import java.io.*;
 import java.util.*;
 
-public class BOJ_20291 {
-    static FastReader fr = new FastReader();
+public class BOJ_1015 {
+    static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
+    static class Element implements Comparable<Element> {
+
+        public int num, idx;
+
+        @Override
+        public int compareTo(Element other) {
+            return num - other.num;
+        }
+    }
+
     static int N;
-    static String[] el;
+    static int[] P;
+    static Element[] B;
 
     static void input() {
-        N = fr.nextInt();
-        el = new String[N+1];
-        for (int i = 1; i <= N; i++) {
-            // 입력된 파일 이름을 . 을 기준으로 나눠서 확장자를 가져오기
-            el[i] = fr.next().split("\\.")[1];
+        N = scan.nextInt();
+        B = new Element[N];
+        P = new int[N];
+        for (int i = 0; i < N; i++) {
+            B[i] = new Element();
+            B[i].num = scan.nextInt();
+            B[i].idx = i;
         }
     }
 
     static void solve() {
-        Arrays.sort(el, 1, N + 1);
-        int cnt = 1;
-        String curExtension = el[1];
-        for (int i = 2; i <= N; i++) {
-            if (el[i].equals(curExtension)) {
-                cnt++;
-            } else {
-                sb.append(curExtension).append(' ').append(cnt).append('\n');
-                curExtension = el[i];
-                cnt = 1;
-            }
+        Arrays.sort(B);
+        for (int i = 0; i < N; i++) {
+            P[B[i].idx] = i;
         }
-        sb.append(curExtension).append(' ').append(cnt).append('\n');
-
-        System.out.println(sb);
+        for (int i = 0; i < N; i++) {
+            sb.append(P[i]).append(' ');
+        }
+        System.out.println(sb.toString());
     }
 
     public static void main(String[] args) {

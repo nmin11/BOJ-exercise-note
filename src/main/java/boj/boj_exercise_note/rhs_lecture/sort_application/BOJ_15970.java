@@ -1,54 +1,60 @@
-package boj.boj_exercise_note.rhs_lecture;
+package boj.boj_exercise_note.rhs_lecture.sort_application;
 
 import java.io.*;
 import java.util.*;
 
-public class BOJ_11652 {
-    static FastReader fr = new FastReader();
+public class BOJ_15970 {
+    static FastReader scan = new FastReader();
     static StringBuilder sb = new StringBuilder();
 
     static int N;
-    static long[] el;
+    static ArrayList<Integer>[] el;
 
     static void input() {
-        N = fr.nextInt();
-        el = new long[N + 1];
+        N = scan.nextInt();
+        el = new ArrayList[N + 1];
+        for (int color = 1; color <= N; color++) {
+            el[color] = new ArrayList<>();
+        }
         for (int i = 1; i <= N; i++) {
-            el[i] = fr.nextLong();
+            int coordinate, color;
+            coordinate = scan.nextInt();
+            color = scan.nextInt();
+            el[color].add(coordinate);
         }
     }
 
-    static void sort() {
-        // Sort 정렬하기
-        Arrays.sort(el, 1, N + 1);
-        // mode: 최빈값, modeCnt: 최빈값의 등장 횟수, curCnt: 현재 값(a[1])의 등장 횟수
-        long mode = el[1];
-        int modeCnt = 1, curCnt = 1;
+    static int toLeft(int color, int idx) {
+        if (idx == 0)  // 왼쪽에 더 이상 점이 없는 상태
+            return Integer.MAX_VALUE;
+        return el[color].get(idx) - el[color].get(idx - 1);
+    }
 
-        // 2번 원소부터 차례대로 보면서, 같은 숫자가 이어서 나오고 있는지, 새로운 숫자가 나왔는지를 판단하여
-        // curCnt 를 갱신해주고, 최빈값을 갱신하는 작업.
-        for (int i = 2; i <= N; i++) {
-            if (el[i] == el[i - 1]) {
-                curCnt++;
-            } else {
-                curCnt = 1;
-            }
+    static int toRight(int color, int idx) {
+        if (idx + 1 == el[color].size())  // 오른쪽에 더 이상 점이 없는 상태
+            return Integer.MAX_VALUE;
+        return el[color].get(idx + 1) - el[color].get(idx);
+    }
 
-            if (curCnt > modeCnt) {
-                modeCnt = curCnt;
-                mode = el[i];
+    static void solve() {
+        for (int color = 1; color <= N; color++)
+            Collections.sort(el[color]);
+
+        int ans = 0;
+        for (int color = 1; color <= N; color++) {
+            for (int i = 0; i < el[color].size(); i++) {
+                int left_distance = toLeft(color, i);
+                int right_distance = toRight(color, i);
+                ans += Math.min(left_distance, right_distance);
             }
         }
-
-        // 정답 출력하기
-        System.out.println(mode);
+        System.out.println(ans);
     }
 
     public static void main(String[] args) {
         input();
-        sort();
+        solve();
     }
-
 
     static class FastReader {
         BufferedReader br;

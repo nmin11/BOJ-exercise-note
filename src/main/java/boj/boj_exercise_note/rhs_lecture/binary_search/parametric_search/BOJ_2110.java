@@ -33,7 +33,7 @@ public class BOJ_2110 {
         return cnt >= C;
     }
 
-    static void pro() {
+    static void solve() {
         // determination 을 빠르게 하기 위해서 정렬해주자.
         Arrays.sort(A, 1, N + 1);
 
@@ -54,7 +54,7 @@ public class BOJ_2110 {
 
     public static void main(String[] args) {
         input();
-        pro();
+        solve();
     }
 
 
